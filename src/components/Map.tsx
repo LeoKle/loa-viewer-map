@@ -36,5 +36,19 @@ export class MapWidget extends React.Component<MapWidgetProps> {
 
   render() {
     return <div ref={this.mapRef} style={{ width: "100%", height: "100vh" }} />;
+    return (
+      <>
+        <div style={{ width: "100%", height: "100vh" }}>
+          <div id="search-container">
+            <Navbar
+              onSelectOption={(option: string): void => {
+                }
+              }}
+            />
+          </div>
+          <div ref={this.mapRef} style={{ width: "100%", height: "100%" }} />
+        </div>
+      </>
+    );
   }
 }
