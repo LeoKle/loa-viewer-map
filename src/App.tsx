@@ -1,19 +1,26 @@
 import React from "react";
 import logo from "./logo.svg";
-import Footer from "./components/Footer";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 import "./App.css";
-import MyMap from "./components/Map";
+import { MapWidget } from "./components/Map";
 
 function App() {
   return (
     <>
-        <Router>
-            <Routes>
-                <Route path="" element={<MyMap/>}/>
-            </Routes>
-        </Router>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={<MapWidget center={[51.163361, 10.447683]} zoom={7} />}
+          />
+        </Routes>
+      </Router>
     </>
   );
 }
