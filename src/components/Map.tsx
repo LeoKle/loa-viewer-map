@@ -19,6 +19,7 @@ interface MapWidgetState {
 export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
   private mapRef: React.RefObject<HTMLDivElement>;
   private map: L.Map | null = null;
+  private arrowLayer: L.LayerGroup | null = null;
 
   constructor(props: MapWidgetProps) {
     super(props);
@@ -43,6 +44,44 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
           maxZoom: 19,
         }
       ).addTo(this.map);
+
+      // Test: adding polylines to map
+      this.arrowLayer = L.layerGroup().addTo(this.map);
+      const arrowLatLngs: L.LatLngExpression[] = [
+        { lat: 50.02629, lng: 8.765245 },
+        { lat: 50, lng: 8 },
+      ];
+      const arrowPolyline = L.polyline(arrowLatLngs, {
+        color: "red",
+        weight: 3,
+        opacity: 0.5,
+      });
+      this.arrowLayer.addLayer(arrowPolyline);
+      // test end
+
+      // fetch data:
+      const conditions = conditionService.getConditions();
+      for (let i = 0; i < conditions.length; i++) {
+        // get coordinates of condition
+        const waypointCoords = conditionService.getCoordinates(
+          conditions[i].cop
+        );
+        if (waypointCoords === undefined) {
+          //console.log("Coordinates of COP " + conditions[i].cop + " undefined");
+          continue;
+        }
+        //console.log(waypointCoords);
+
+        const conditionPolyline = L.marker(waypointCoords[0]);
+
+        // const conditionPolyline = L.polyline(waypointCoords, {
+        //   color: "red",
+        //   weight: 3,
+        //   opacity: 0.5,
+        // });
+
+        this.arrowLayer.addLayer(conditionPolyline);
+      }
     }
   }
 
