@@ -6,6 +6,8 @@ import { Navbar } from "./NavBar";
 import conditionService from "../services/conditionService";
 import Condition from "../interfaces/condition.interface";
 
+import arrow from "../img/ArrowWhite.png";
+
 interface MapWidgetProps {
   center: [number, number];
   zoom: number;
@@ -47,16 +49,18 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
 
       // Test: adding polylines to map
       this.arrowLayer = L.layerGroup().addTo(this.map);
-      const arrowLatLngs: L.LatLngExpression[] = [
-        { lat: 50.02629, lng: 8.765245 },
-        { lat: 50, lng: 8 },
-      ];
-      const arrowPolyline = L.polyline(arrowLatLngs, {
-        color: "red",
-        weight: 3,
-        opacity: 0.5,
-      });
-      this.arrowLayer.addLayer(arrowPolyline);
+
+      // const arrowLatLngs: L.LatLngExpression[] = [
+      //   { lat: 50.02629, lng: 8.765245 },
+      //   { lat: 50, lng: 8 },
+      // ];
+      // const arrowPolyline = L.polyline(arrowLatLngs, {
+      //   color: "red",
+      //   weight: 3,
+      //   opacity: 0.5,
+      // });
+      // this.arrowLayer.addLayer(arrowPolyline);
+
       // test end
 
       // fetch data:
@@ -72,7 +76,14 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
         }
         //console.log(waypointCoords);
 
-        const conditionPolyline = L.marker(waypointCoords[0]);
+        const icon = L.icon({
+          iconUrl: arrow,
+          iconSize: [20, 20],
+          iconAnchor: [1, 0],
+        });
+        const conditionPolyline = L.marker(waypointCoords[0], {
+          icon,
+        });
 
         // const conditionPolyline = L.polyline(waypointCoords, {
         //   color: "red",
