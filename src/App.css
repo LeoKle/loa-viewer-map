@@ -21,5 +21,7 @@
 }
 
 .condition-main {
+  display: inline-block;
+  white-space: nowrap;
   color: white;
 }

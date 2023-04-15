@@ -84,8 +84,11 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
           "DEST: " +
           aerodrome +
           " " +
+          "<br>" +
+          "COP: " +
           conditions[i].cop +
           "<br>" +
+          "FL: " +
           conditions[i].level +
           "<br>" +
           "</div>";
