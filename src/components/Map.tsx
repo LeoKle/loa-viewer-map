@@ -76,13 +76,31 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
         }
         //console.log(waypointCoords);
 
+        // create a custom widget which will be displayed on the map
+        const aerodrome: string = conditions[i].aerodrome.replace(/\n/g, ", ");
+
+        const widget: string =
+          "<div class='condition-main'>" +
+          "DEST: " +
+          aerodrome +
+          " " +
+          conditions[i].cop +
+          "<br>" +
+          conditions[i].level +
+          "<br>" +
+          "</div>";
+        var agreementMarker = L.divIcon({
+          className: "agreement-marker",
+          html: widget,
+        });
+
         const icon = L.icon({
           iconUrl: arrow,
           iconSize: [20, 20],
           iconAnchor: [1, 0],
         });
         const conditionPolyline = L.marker(waypointCoords[0], {
-          icon,
+          icon: agreementMarker,
         });
 
         // const conditionPolyline = L.polyline(waypointCoords, {
