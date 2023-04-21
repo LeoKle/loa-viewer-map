@@ -1,10 +1,10 @@
-import axios from 'axios';
-import conditionsData from '../data/conditions.json';
-import Condition from '../interfaces/condition.interface';
-import waypointsData from '../data/waypoints.json';
-import Waypoint from '../interfaces/waypoint.interface';
-import coordinates from '../utils/coordinates';
-import L from 'leaflet';
+import axios from "axios";
+import conditionsData from "../data/conditions.json";
+import Condition from "../interfaces/condition.interface";
+import waypointsData from "../data/waypoints.json";
+import Waypoint from "../interfaces/waypoint.interface";
+import coordinates from "../utils/coordinates";
+import L from "leaflet";
 
 // server does not allow API get requests due to CORS policy, using static json to simulate API responses
 // async function getConditions() {
@@ -18,27 +18,39 @@ import L from 'leaflet';
 // }
 
 function getConditions() {
-    const conditions = conditionsData as Condition[];
-    return conditions;
+  const conditions = conditionsData as Condition[];
+  return conditions;
 }
 
-function getCoordinates(name: string)
-{
-    const waypoints = waypointsData as Waypoint[];
-    const waypoint = waypoints.find((waypoint) => waypoint.name === name);
-
-    if (waypoint === undefined)
-    {
-        return undefined;
+function groupConditionsByCop(
+  conditions: Condition[]
+): Record<string, Condition[]> {
+  return conditions.reduce((acc, condition) => {
+    const { cop } = condition;
+    if (!acc[cop]) {
+      acc[cop] = [];
     }
+    acc[cop].push(condition);
+    return acc;
+  }, {} as Record<string, Condition[]>);
+}
 
-    const latitude = coordinates.convertLatitudeToNumber(waypoint.LAT);
-    const longitude = coordinates.convertLongitudeToNumber(waypoint.LONG);
+function getCoordinates(name: string) {
+  const waypoints = waypointsData as Waypoint[];
+  const waypoint = waypoints.find((waypoint) => waypoint.name === name);
 
-    return [L.latLng(latitude, longitude)];
+  if (waypoint === undefined) {
+    return undefined;
+  }
+
+  const latitude = coordinates.convertLatitudeToNumber(waypoint.LAT);
+  const longitude = coordinates.convertLongitudeToNumber(waypoint.LONG);
+
+  return [L.latLng(latitude, longitude)];
 }
 
 export default {
-    getConditions,
-    getCoordinates,
+  getConditions,
+  groupConditionsByCop,
+  getCoordinates,
 };

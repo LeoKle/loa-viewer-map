@@ -60,59 +60,58 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
       //   opacity: 0.5,
       // });
       // this.arrowLayer.addLayer(arrowPolyline);
-
       // test end
 
       // fetch data:
-      const conditions = conditionService.getConditions();
-      for (let i = 0; i < conditions.length; i++) {
-        // get coordinates of condition
-        const waypointCoords = conditionService.getCoordinates(
-          conditions[i].cop
-        );
-        if (waypointCoords === undefined) {
-          //console.log("Coordinates of COP " + conditions[i].cop + " undefined");
+      const conditionsGroupedByCop = conditionService.groupConditionsByCop(
+        conditionService.getConditions()
+      );
+
+      for (const [cop, conditions] of Object.entries(conditionsGroupedByCop)) {
+        const copCoords = conditionService.getCoordinates(cop);
+        if (copCoords === undefined) {
           continue;
         }
-        //console.log(waypointCoords);
 
-        // create a custom widget which will be displayed on the map
-        const aerodrome: string = conditions[i].aerodrome.replace(/\n/g, ", ");
+        // create widget
+        let widget: string =
+          "<div class='condition-main' style='text-align: center'>" +
+          "<p>" +
+          cop +
+          "</p>" +
+          "<br>" +
+          "<div>" +
+          "<table>" +
+          "<th> AD </th>" +
+          "<th> COP </th>" +
+          "<th> Level </th>" +
+          "<th> Special Conditions </th>" +
+          "<th> From Sector </th>" +
+          "<th> To Sector </th>";
+        for (let i = 0; i < conditions.length; i++) {
+          widget += "<tr>";
 
-        const widget: string =
-          "<div class='condition-main'>" +
-          "DEST: " +
-          aerodrome +
-          " " +
-          "<br>" +
-          "COP: " +
-          conditions[i].cop +
-          "<br>" +
-          "FL: " +
-          conditions[i].level +
-          "<br>" +
-          "</div>";
-        var agreementMarker = L.divIcon({
+          widget += "<td>" + conditions[i].aerodrome + "</td>";
+          widget += "<td>" + conditions[i].cop + "</td>";
+          widget += "<td>" + conditions[i].level + "</td>";
+          widget += "<td>" + conditions[i].special_conditions + "</td>";
+          widget += "<td>" + conditions[i].from_sector + "</td>";
+          widget += "<td>" + conditions[i].to_sector + "</td>";
+
+          widget += "</tr>";
+        }
+
+        widget += "</table> </div> </div>";
+
+        // add COP to map
+        var copIcon = L.divIcon({
           className: "agreement-marker",
           html: widget,
         });
-
-        const icon = L.icon({
-          iconUrl: arrow,
-          iconSize: [20, 20],
-          iconAnchor: [1, 0],
+        const copMarker = L.marker(copCoords[0], {
+          icon: copIcon,
         });
-        const conditionPolyline = L.marker(waypointCoords[0], {
-          icon: agreementMarker,
-        });
-
-        // const conditionPolyline = L.polyline(waypointCoords, {
-        //   color: "red",
-        //   weight: 3,
-        //   opacity: 0.5,
-        // });
-
-        this.arrowLayer.addLayer(conditionPolyline);
+        this.arrowLayer.addLayer(copMarker);
       }
     }
   }
