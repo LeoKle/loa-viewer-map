@@ -1,10 +1,9 @@
-import axios from "axios";
 import conditionsData from "../data/conditions.json";
 import Condition from "../interfaces/condition.interface";
 import waypointsData from "../data/waypoints.json";
 import Waypoint from "../interfaces/waypoint.interface";
 import coordinates from "../utils/coordinates";
-import L from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 
 // server does not allow API get requests due to CORS policy, using static json to simulate API responses
 // async function getConditions() {
@@ -22,19 +21,6 @@ function getConditions() {
   return conditions;
 }
 
-function groupConditionsByCop(
-  conditions: Condition[]
-): Record<string, Condition[]> {
-  return conditions.reduce((acc, condition) => {
-    const { cop } = condition;
-    if (!acc[cop]) {
-      acc[cop] = [];
-    }
-    acc[cop].push(condition);
-    return acc;
-  }, {} as Record<string, Condition[]>);
-}
-
 function getCoordinates(name: string) {
   const waypoints = waypointsData as Waypoint[];
   const waypoint = waypoints.find((waypoint) => waypoint.name === name);
@@ -46,11 +32,10 @@ function getCoordinates(name: string) {
   const latitude = coordinates.convertLatitudeToNumber(waypoint.LAT);
   const longitude = coordinates.convertLongitudeToNumber(waypoint.LONG);
 
-  return [L.latLng(latitude, longitude)];
+  return [latitude, longitude] as LatLngExpression;
 }
 
 export default {
   getConditions,
-  groupConditionsByCop,
   getCoordinates,
 };
