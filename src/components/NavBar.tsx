@@ -6,7 +6,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ onSelectOption }) => {
   return (
-    <nav style={{ textAlign: "center" }}>
+    <nav>
       <button
         onClick={() => onSelectOption("EDGG")}
         style={{ marginRight: "10px" }}

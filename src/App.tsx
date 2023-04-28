@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 
 import "./App.css";
-import { MapWidget } from "./components/Map";
+import LeafletReactMap from "./components/LeafletReactMap";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<MapWidget center={[51.163361, 10.447683]} zoom={7} />}
+            element={<LeafletReactMap/>}
           />
         </Routes>
       </Router>

@@ -18,6 +18,7 @@ table {
 }
 td, th {
   padding: 3px; 
+  white-space: nowrap;
 }
 
 .custom-icon {
