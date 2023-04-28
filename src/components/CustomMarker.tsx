@@ -1,22 +1,26 @@
-import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal } from "react";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactFragment,
+  ReactPortal,
+} from "react";
 import Condition from "../interfaces/condition.interface";
 import { DivIcon } from "leaflet";
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup } from "react-dom/server";
 import conditionService from "../services/conditionService";
 import { Marker } from "react-leaflet";
 
 interface Props {
-    cop: string;
-    conditions: Condition[];
+  cop: string;
+  conditions: Condition[];
 }
 
-function ConditionTableIcon({cop, conditions} : Props) {
+function ConditionTableIcon({ cop, conditions }: Props) {
   return (
     <table>
       <thead>
         <tr>
           <th>AD</th>
-          <th>ADEP/ADES</th>
           <th>COP</th>
           <th>Level</th>
           <th>XC</th>
@@ -30,8 +34,14 @@ function ConditionTableIcon({cop, conditions} : Props) {
       <tbody>
         {conditions.map((condition, index) => (
           <tr key={index}>
-            <td>{condition.aerodrome}</td>
-            <td>{condition.adep_ades}</td>
+            <td>
+              {condition.adep_ades === "ADEP"
+                ? "\u2191"
+                : condition.adep_ades === "ADES"
+                ? "\u2193"
+                : ""}{" "}
+              {condition.aerodrome}
+            </td>
             <td>{condition.cop}</td>
             <td>{condition.level}</td>
             <td>{condition.xc}</td>
@@ -47,19 +57,18 @@ function ConditionTableIcon({cop, conditions} : Props) {
   );
 }
 
-function ConditionMarker({cop, conditions} : Props) {
-
-  const customIcon = new DivIcon({className: 'custom-icon', html: renderToStaticMarkup(<ConditionTableIcon cop={cop} conditions={conditions}/>)});
+function ConditionMarker({ cop, conditions }: Props) {
+  const customIcon = new DivIcon({
+    className: "custom-icon",
+    html: renderToStaticMarkup(
+      <ConditionTableIcon cop={cop} conditions={conditions} />
+    ),
+  });
   const copCoords = conditionService.getCoordinates(cop);
 
   return (
-    <>
-    {copCoords && (
-      <Marker position={copCoords} icon={customIcon}></Marker>
-    )}
-    </>
+    <>{copCoords && <Marker position={copCoords} icon={customIcon}></Marker>}</>
   );
 }
 
-export default ConditionMarker
-
+export default ConditionMarker;
