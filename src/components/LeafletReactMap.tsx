@@ -34,23 +34,25 @@ export default function LeafletReactMap() {
     }, [debouncedSearch]);
     
     return (
-        <MapContainer
-        center={center}
-        zoom={zoom}
-        style={{ width: '100vw', height: '100vh' }}
-        maxZoom={10}
-        minZoom={6}>
-            <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            />
-            {filteredConditions && Object.entries(filteredConditions).map(([cop, conditions]) => (
-                <>
-                    <ConditionMarker conditions={conditions} cop={cop} />
-                </>
-            ))}
-            
-        </MapContainer>
-        
+        <>
+            <input type="search" placeholder='Search' onChange={(e) => setSearch(e.target.value)}/>
+            <MapContainer
+            center={center}
+            zoom={zoom}
+            style={{ width: '100vw', height: '100vh' }}
+            maxZoom={10}
+            minZoom={6}>
+                <TileLayer
+                url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                />
+                {filteredConditions && Object.entries(filteredConditions).map(([cop, conditions]) => (
+                    <>
+                        <ConditionMarker conditions={conditions} cop={cop} />
+                    </>
+                ))}
+                
+            </MapContainer>
+        </>
     );
 }
