@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as L from "leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -6,7 +6,7 @@ import { Navbar } from "./NavBar";
 import conditionService from "../services/conditionService";
 import Condition from "../interfaces/condition.interface";
 
-import arrow from "../img/ArrowWhite.png";
+import groupConditionsByCop from "../services/groupConditionsService";
 
 interface MapWidgetProps {
   center: [number, number];
@@ -16,6 +16,7 @@ interface MapWidgetProps {
 interface MapWidgetState {
   center: [number, number];
   zoom: number;
+  searchInput: string;
 }
 
 export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
@@ -29,6 +30,7 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
     this.state = {
       center: props.center,
       zoom: props.zoom,
+      searchInput: "",
     };
   }
 
@@ -63,7 +65,7 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
       // test end
 
       // fetch data:
-      const conditionsGroupedByCop = conditionService.groupConditionsByCop(
+      const conditionsGroupedByCop = groupConditionsByCop(
         conditionService.getConditions()
       );
 
@@ -157,6 +159,9 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
                 }
               }}
             />
+          </div>
+          <div>
+            <input type="search" placeholder="Search for waypoints, stations or airports" />
           </div>
           <div ref={this.mapRef} style={{ width: "100%", height: "100%" }} />
         </div>
