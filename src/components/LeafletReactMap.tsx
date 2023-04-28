@@ -24,13 +24,17 @@ export default function LeafletReactMap() {
   const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
-    if (search === "") {
-      setSearch("GIN");
-    }
     const searchConditions = filterConditionsService(conditions, search);
     const groupedConditions = groupConditionsByCop(searchConditions);
     setFilteredConditions(groupedConditions);
   }, [debouncedSearch]);
+
+  useEffect(() => {
+    // set default search if nothing is inputted
+    if (search === "") {
+      setSearch("GIN");
+    }
+  }, [search]);
 
   return (
     <>
