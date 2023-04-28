@@ -91,7 +91,15 @@ export class MapWidget extends React.Component<MapWidgetProps, MapWidgetState> {
         for (let i = 0; i < conditions.length; i++) {
           widget += "<tr>";
 
-          widget += "<td>" + conditions[i].aerodrome + "</td>";
+          let aerodrome_prefix = "";
+          if (conditions[i].adep_ades === "ADEP") {
+            aerodrome_prefix = "\u2191 ";
+          } else {
+            aerodrome_prefix = "\u2193 ";
+          }
+
+          widget +=
+            "<td>" + aerodrome_prefix + conditions[i].aerodrome + "</td>";
           widget += "<td>" + conditions[i].cop + "</td>";
           widget += "<td>" + conditions[i].level + "</td>";
           widget += "<td>" + conditions[i].special_conditions + "</td>";
