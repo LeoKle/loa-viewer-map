@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polygon, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Condition from "../interfaces/condition.interface";
+import { LatLngExpression } from "leaflet";
 import useDebounce from "../hooks/useDebounce";
 import ConditionMarker from "./CustomMarker";
 import conditionService from "../services/conditionService";

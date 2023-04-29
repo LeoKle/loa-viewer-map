@@ -1,9 +1,3 @@
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
-  ReactPortal,
-} from "react";
 import Condition from "../interfaces/condition.interface";
 import { DivIcon } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";

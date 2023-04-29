@@ -3,7 +3,7 @@ import Condition from "../interfaces/condition.interface";
 import waypointsData from "../data/waypoints.json";
 import Waypoint from "../interfaces/waypoint.interface";
 import coordinates from "../utils/coordinates";
-import L, { LatLngExpression } from "leaflet";
+import { LatLngExpression } from "leaflet";
 
 // server does not allow API get requests due to CORS policy, using static json to simulate API responses
 // async function getConditions() {
