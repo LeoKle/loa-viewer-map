@@ -4,7 +4,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import conditionService from "../services/conditionService";
 import { Marker, useMap, useMapEvent } from "react-leaflet";
 import { useEffect, useState } from "react";
-import ArrowWhite from "../img/location.png";
+import location from "../img/location.png";
 
 interface PropsMarker {
   cop: string;
@@ -93,7 +93,7 @@ function ConditionMarker({ cop, conditions }: PropsMarker) {
 
     setMarkerIcon(
       new Icon({
-        iconUrl: ArrowWhite,
+        iconUrl: location,
         iconSize: [IconSize, IconSize],
       })
     );
