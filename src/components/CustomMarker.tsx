@@ -1,17 +1,29 @@
 import Condition from "../interfaces/condition.interface";
-import { DivIcon } from "leaflet";
+import { DivIcon, Icon, LatLngLiteral, LatLngTuple } from "leaflet";
 import { renderToStaticMarkup } from "react-dom/server";
 import conditionService from "../services/conditionService";
-import { Marker } from "react-leaflet";
+import { Marker, useMap, useMapEvent } from "react-leaflet";
+import { useEffect, useState } from "react";
+import ArrowWhite from "../img/location.png";
 
-interface Props {
+interface PropsMarker {
   cop: string;
   conditions: Condition[];
 }
 
-function ConditionTableIcon({ cop, conditions }: Props) {
+interface PropsTable {
+  cop: string;
+  conditions: Condition[];
+  zoom: number;
+}
+
+function ConditionTableIcon({ cop, conditions, zoom }: PropsTable) {
+  const tableStyle = {
+    fontSize: zoom + 2,
+  };
+
   return (
-    <table>
+    <table style={tableStyle}>
       <thead>
         <tr>
           <th>AD</th>
@@ -37,7 +49,10 @@ function ConditionTableIcon({ cop, conditions }: Props) {
               {condition.aerodrome}
             </td>
             <td>{condition.cop}</td>
-            <td>{condition.level}</td>
+            <td>
+              {condition.feet ? "A" : "FL"}
+              {condition.level}{" "}
+            </td>
             <td>{condition.xc}</td>
             <td>{condition.special_conditions}</td>
             <td>{condition.from_sector}</td>
@@ -51,17 +66,50 @@ function ConditionTableIcon({ cop, conditions }: Props) {
   );
 }
 
-function ConditionMarker({ cop, conditions }: Props) {
-  const customIcon = new DivIcon({
-    className: "custom-icon",
-    html: renderToStaticMarkup(
-      <ConditionTableIcon cop={cop} conditions={conditions} />
-    ),
+function ConditionMarker({ cop, conditions }: PropsMarker) {
+  const map = useMap();
+  const [zoom, setZoom] = useState<number>(map.getZoom());
+  const [Table, setTable] = useState<DivIcon>();
+  const [MarkerIcon, setMarkerIcon] = useState<Icon>();
+  const [copCoords, setCopCoords] = useState<
+    LatLngLiteral | LatLngTuple | undefined
+  >([0, 0]);
+
+  useMapEvent("zoomend", () => {
+    setZoom(map.getZoom());
   });
-  const copCoords = conditionService.getCoordinates(cop);
+
+  useEffect(() => {
+    setTable(
+      new DivIcon({
+        className: "custom-icon",
+        html: renderToStaticMarkup(
+          <ConditionTableIcon cop={cop} conditions={conditions} zoom={zoom} />
+        ),
+      })
+    );
+
+    const IconSize = zoom + 5;
+
+    setMarkerIcon(
+      new Icon({
+        iconUrl: ArrowWhite,
+        iconSize: [IconSize, IconSize],
+      })
+    );
+
+    setCopCoords(conditionService.getCoordinates(cop));
+  }, [zoom, cop, conditions]);
 
   return (
-    <>{copCoords && <Marker position={copCoords} icon={customIcon}></Marker>}</>
+    <>
+      {copCoords && Table && (
+        <>
+          <Marker position={copCoords} icon={MarkerIcon} />
+          <Marker position={copCoords} icon={Table} />
+        </>
+      )}
+    </>
   );
 }
 
