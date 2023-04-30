@@ -5,7 +5,6 @@ import Condition from "../interfaces/condition.interface";
 import useDebounce from "../hooks/useDebounce";
 import ConditionMarker from "./CustomMarker";
 import conditionService from "../services/conditionService";
-import { SectorJson } from "../interfaces/apisectors.interface";
 import filterConditionsService from "../services/filterConditionsService";
 import groupConditionsByCop from "../services/groupConditionsService";
 import { InputText } from "primereact/inputtext";
