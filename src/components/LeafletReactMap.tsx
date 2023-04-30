@@ -12,9 +12,6 @@ import groupConditionsByCop from "../services/groupConditionsService";
 import { InputText } from "primereact/inputtext";
 
 export default function LeafletReactMap() {
-  const [center, setCenter] = useState<LatLngExpression>([50.026292, 8.765245]);
-  const [zoom, setZoom] = useState<number>(8);
-
   const conditions: Condition[] = conditionService.getConditions();
 
   const [filteredConditions, setFilteredConditions] =
@@ -53,8 +50,8 @@ export default function LeafletReactMap() {
           }}
         />
         <MapContainer
-          center={center}
-          zoom={zoom}
+          center={[50.026292, 8.765245]}
+          zoom={8}
           style={{ width: "100vw", height: "100vh", zIndex: 0 }}
           maxZoom={10}
           minZoom={6}
