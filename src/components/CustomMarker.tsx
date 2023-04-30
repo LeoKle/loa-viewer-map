@@ -26,21 +26,30 @@ function ConditionTableIcon({ cop, conditions, zoom }: PropsTable) {
     <table style={tableStyle}>
       <thead>
         <tr>
-          <th>AD</th>
-          <th>COP</th>
-          <th>Level</th>
-          <th>XC</th>
-          <th>Special Conditions</th>
-          <th>From Sector</th>
-          <th>To Sector</th>
-          <th>From FIR</th>
-          <th>To FIR</th>
+          <th className="center" colSpan={5} />
+          <th className="center line" colSpan={2}>
+            Sector
+          </th>
+          <th className="center line " colSpan={2}>
+            FIR
+          </th>
+        </tr>
+        <tr>
+          <th className="line">AD</th>
+          <th className="line">COP</th>
+          <th className="line">Level</th>
+          <th className="line">XC</th>
+          <th className="line">Special Conditions</th>
+          <th className="line">From</th>
+          <th className="line">To</th>
+          <th className="line">From</th>
+          <th className="line">To</th>
         </tr>
       </thead>
       <tbody>
         {conditions.map((condition, index) => (
           <tr key={index}>
-            <td>
+            <td className="line">
               {condition.adep_ades === "ADEP"
                 ? "\u2191"
                 : condition.adep_ades === "ADES"
@@ -48,17 +57,17 @@ function ConditionTableIcon({ cop, conditions, zoom }: PropsTable) {
                 : ""}{" "}
               {condition.aerodrome}
             </td>
-            <td>{condition.cop}</td>
-            <td>
+            <td className="line">{condition.cop}</td>
+            <td className="line">
               {condition.feet ? "A" : "FL"}
               {condition.level}{" "}
             </td>
-            <td>{condition.xc}</td>
-            <td>{condition.special_conditions}</td>
-            <td>{condition.from_sector}</td>
-            <td>{condition.to_sector}</td>
-            <td>{condition.from_fir}</td>
-            <td>{condition.to_fir}</td>
+            <td className="line">{condition.xc}</td>
+            <td className="line">{condition.special_conditions}</td>
+            <td className="line">{condition.from_sector}</td>
+            <td className="line">{condition.to_sector}</td>
+            <td className="line">{condition.from_fir}</td>
+            <td className="line">{condition.to_fir}</td>
           </tr>
         ))}
       </tbody>
