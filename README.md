@@ -1,6 +1,7 @@
 # LoA Viewer Map
 
-This project was created as an initial test version and will be later integrated into [LoA Viewer project of Vatsim Germany][LoAProject].
+This project was created as an initial test version for the [LoA Viewer project of Vatsim Germany][LoAProject].
+It has been integrated and developed further [in the following repository](LoAProject).
 Its purpose is to display agreements and COPs (Coordination Entry/Exit Point) defined inside [Letter of Agreements][LoA].
 
 [LoA]: https://www.faa.gov/air_traffic/publications/atpubs/foa_html/chap4_section_3.html
